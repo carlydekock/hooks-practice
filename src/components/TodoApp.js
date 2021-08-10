@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,13 +9,18 @@ import TodoForm from './TodoForm';
 import { v4 as uuid } from 'uuid';
 
 function TodoApp() {
-  const initialTodos = [
-    { id: uuid(), task: "Study", completed: false },
-    { id: uuid(), task: "Water garden", completed: true },
-    { id: uuid(), task: "Cook dinner", completed: false }
-  ];
+  const initialTodos = JSON.parse(window.localStorage.getItem('todos') || "[]");
+  // const initialTodos = [
+  //   { id: uuid(), task: "Study", completed: false },
+  //   { id: uuid(), task: "Water garden", completed: true },
+  //   { id: uuid(), task: "Cook dinner", completed: false }
+  // ];
 
   const [todos, setTodos] = useState(initialTodos);
+
+  useEffect(() => {
+    window.localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
   
   const addTodo = newTodoText => {
     setTodos([...todos, { id: uuid(), task: newTodoText, completed: false }]);
@@ -55,7 +60,7 @@ function TodoApp() {
           <Typography color='inherit'>Todos with hooks</Typography>
         </Toolbar>
       </AppBar>
-      <Grid container justify='center' style={{marginTop: '1rem'}}>
+      <Grid container justifyContent='center' style={{marginTop: '1rem'}}>
         <Grid item xs={11} md={8} lg={4}>
           <TodoForm addTodo={addTodo} />
           <TodoList todos={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} editTodo={editTodo}/>
