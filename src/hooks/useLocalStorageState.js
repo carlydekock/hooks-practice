@@ -14,7 +14,7 @@ function useLocalStorageState(key, defaultVal){
 
   //use useEffect to update localStorage when state changes
   useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(state));
+    window.localStorage.setItem(key, JSON.stringify(state)); //eslint-disable-next-line
   }, [state]);
 
   return [state, setState];
